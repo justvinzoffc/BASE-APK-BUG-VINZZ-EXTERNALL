@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADD KEY</title>
+
+<style>
+body{
+  background:#090b1a;
+  font-family:Arial;
+  color:white;
+  padding:20px;
+}
+
+h2{
+  text-align:center;
+}
+
+form{
+  background:#15152a;
+  padding:20px;
+  border-radius:15px;
+  margin-top:20px;
+}
+
+input, select{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:none;
+  border-radius:10px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#7b2bff;
+  border:none;
+  border-radius:10px;
+  color:white;
+  font-size:17px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#9d5cff;
+}
+</style>
+</head>
+<body>
+
+<h2>Add New Key</h2>
+
+<form>
+  <label>Username</label>
+  <input type="text" id="username">
+
+  <label>Password</label>
+  <input type="text" id="password">
+
+  <label>Role</label>
+  <select id="role">
+    <option value="user">User</option>
+    <option value="owner">Owner</option>
+  </select>
+
+  <label>Expired (contoh: 22-12-2025)</label>
+  <input type="text" id="expired" placeholder="22-12-9999">
+
+  <button type="button" onclick="addUser()">SEND➡️</button>
+</form>
+
+<script>
+const repoOwner = "justvinzoffc";
+const repoName = "APK-BUG-VINZZ-EXTERNALL";
+const filePath = "keys.json";
+const token = "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"; // <--- Ganti token kamu di sini
+
+async function addUser() {
+  let username = document.getElementById("username").value.trim();
+  let password = document.getElementById("password").value.trim();
+  let role = document.getElementById("role").value;
+  let expired = document.getElementById("expired").value.trim();
+
+  if (!username || !password || !expired) {
+    alert("Semua field wajib diisi!!");
+    return;
+  }
+
+  const getUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
+
+  // Ambil file keys.json dulu
+  let fileData = await fetch(getUrl, {
+    headers: { "Authorization": `token ${token}` }
+  }).then(r => r.json());
+
+  // Decode base64 -> JSON
+  let content = atob(fileData.content);
+  let json = JSON.parse(content);
+
+  // Tambahkan user
+  json.users.push({
+    username: username,
+    password: password,
+    role: role,
+    expired: expired
+  });
+
+  // Encode kembali ke base64
+  let newContent = btoa(JSON.stringify(json, null, 2));
+
+  // Upload ulang ke GitHub
+  await fetch(getUrl, {
+    method: "PUT",
+    headers: {
+      "Authorization": `token ${token}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: `Add user ${username}`,
+      content: newContent,
+      sha: fileData.sha
+    })
+  });
+
+  alert("Key berhasil ditambahkan ke Database !!");
+}
+</script>
+
+</body>
+</html>

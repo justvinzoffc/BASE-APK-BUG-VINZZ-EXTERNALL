@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vinzz Externall - System Crasher</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
+body{height:100vh;overflow:hidden;background:#000;}
+.bg-video{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1;}
+.container{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:90%;max-width:420px;padding:25px;border-radius:20px;
+  background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.2);text-align:center;color:white;
+  box-shadow:0 0 25px rgba(255,255,255,0.1);
+}
+.header-video{
+  width:100%;height:140px;object-fit:cover;border-radius:15px;margin-bottom:18px;
+}
+.btn{
+  width:100%;padding:14px;border-radius:10px;border:none;margin-top:10px;
+  font-size:16px;cursor:pointer;transition:0.2s;
+}
+.btn-username{background:#ffffff10;border:1px solid #ffffff40;color:white;}
+.btn-username:hover{background:#ffffff20;}
+.btn-telegram{background:#30a3e6;color:white;}
+.btn-telegram:hover{background:#1c8dcb;}
+.modal{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;
+}
+.modal.open{display:flex;}
+.modal-box{
+  width:90%;max-width:400px;background:#111;padding:20px;border-radius:15px;
+  border:1px solid #444;color:white;
+}
+input{
+  width:100%;padding:12px;border-radius:8px;border:1px solid #555;
+  background:#222;color:white;margin-bottom:10px;
+}
+.close{float:right;cursor:pointer;font-size:20px;}
+.msg{text-align:center;margin-top:10px;font-size:15px;}
+</style>
+</head>
+<body>
+
+<video class="bg-video" autoplay muted loop>
+  <source src="https://files.catbox.moe/3bvjk8.mov" type="video/mp4">
+</video>
+
+<div class="container">
+  <video class="header-video" autoplay muted loop>
+    <source src="https://files.catbox.moe/3bvjk8.mov" type="video/mp4">
+  </video>
+
+  <h2>Vinzz Externall - Quantum Login</h2>
+
+  <button id="btnUser" class="btn btn-username">Sign in - using Username</button>
+  <button id="btnTele" class="btn btn-telegram">Buy Accest - using Telegram</button>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-box">
+    <span id="closeModal" class="close">&times;</span>
+    <h3>Security Protocol</h3>
+    <input id="username" placeholder="Username / Agent ID">
+    <input id="password" type="Acces Key" placeholder="Password">
+    <button id="signinBtn" class="btn btn-telegram">INITIATE CONNECTION</button>
+    <div id="msg" class="msg"></div>
+  </div>
+</div>
+
+<script>
+const GITHUB_DB_URL = "https://raw.githubusercontent.com/justvinzoffc/APK-BUG-VINZZ-EXTERNALL/main/keys.json";
+const TELEGRAM_OWNER = "vinzzloww";
+
+btnUser.onclick = () => modal.classList.add("open");
+closeModal.onclick = () => modal.classList.remove("open");
+
+btnTele.onclick = () => {
+  window.location.href = `https://t.me/${TELEGRAM_OWNER}`;
+};
+
+signinBtn.onclick = async () => {
+  const u = username.value.trim();
+  const p = password.value.trim();
+
+  if(!u || !p){
+    msg.textContent = "Please your Username and Password";
+    msg.style.color = "#ff8080";
+    return;
+  }
+
+  try{
+    const res = await fetch(GITHUB_DB_URL + "?t=" + Date.now());
+    const data = await res.json();
+
+    const found = data.users.find(x => x.username === u && x.password === p);
+
+    if(found){
+      msg.textContent = "Login Succes !!";
+      msg.style.color = "#90ffb4";
+
+      setTimeout(() => {
+        window.location.href = "dashboard.html?user=" + u;
+      }, 500);
+
+    } else {
+      msg.textContent = "Username or Password invalid";
+      msg.style.color = "#ff8080";
+    }
+
+  }catch(e){
+    msg.textContent = "Error To Connection Database";
+    msg.style.color = "orange";
+  }
+};
+</script>
+
+</body>
+</html>
