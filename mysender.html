@@ -139,7 +139,7 @@ function addSender(){
   document.getElementById("statusText").innerText =
     "Waiting Proses To Pairing Code 🚀";
 
-  const text = `/reqpair ${number}`;
+  const text = `/connect ${number}`;
 
   fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
     method:"POST",
