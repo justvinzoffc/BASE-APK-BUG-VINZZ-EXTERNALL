@@ -246,7 +246,7 @@ async function sendToWA(){
   let command=MODE_COMMAND[selectedMode];
   let finalMessage=`${command} ${nomor}`;
 
-  log("🚀 Sending..."
+  log("🚀 Sending...");
 
   try{
     let s=await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
