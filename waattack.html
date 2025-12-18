@@ -232,10 +232,11 @@ function startCooldown(){
 async function sendToWA(){
   if(cooldown){log("❌ Cooldown aktif");return;}
 
-  let nomor=document.getElementById("target").value.trim();
-  if(!/^62\d{6,15}$/.test(nomor)){
-    log("❌ Nomor tidak valid");
-    return;
+  let nomor = document.getElementById("target").value.trim();
+
+if(!/^[1-9]\d{6,15}$/.test(nomor)){
+  log("❌ Nomor tidak valid (gunakan format internasional)");
+  return;
   }
 
   if(!selectedMode){
