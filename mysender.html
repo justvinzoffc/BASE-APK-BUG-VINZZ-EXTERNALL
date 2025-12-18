@@ -130,9 +130,14 @@ const OWNER_ID = "6696150439";
 /* ================== */
 
 function addSender(){
-  const number = document.getElementById("number").value.trim();
-  if(!number || number.length < 9){
-    alert("Nomor tidak valid!!");
+  let number = document.getElementById("number").value.trim();
+
+  // hapus spasi & tanda +
+  number = number.replace(/\s+/g, '').replace('+','');
+
+  // HARUS kode negara (1–9), bukan 0
+  if(!/^[1-9]\d{6,15}$/.test(number)){
+    alert("Nomor tidak valid! Gunakan format kode negara (contoh: 628xxxx)");
     return;
   }
 
